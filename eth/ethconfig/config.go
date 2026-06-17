@@ -92,6 +92,12 @@ type Config struct {
 	NetworkId uint64
 	SyncMode  SyncMode
 
+	// SnapSkipReceipts skips the historical receipt backfill (and its
+	// validation) during snap sync, reconstructing state only. Lets a node
+	// snap-sync from a peer that does not retain historical receipts (e.g. a
+	// snapshot/StaticSnapPivot Nethermind source).
+	SnapSkipReceipts bool
+
 	// HistoryMode configures chain history retention.
 	HistoryMode history.HistoryMode
 

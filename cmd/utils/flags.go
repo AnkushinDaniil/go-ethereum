@@ -280,6 +280,11 @@ var (
 		Value:    ethconfig.Defaults.SyncMode.String(),
 		Category: flags.StateCategory,
 	}
+	SnapSkipReceiptsFlag = &cli.BoolFlag{
+		Name:     "snap.skipreceipts",
+		Usage:    "Skip the historical receipt backfill during snap sync (reconstruct state only). Lets a node snap-sync from a peer that does not retain historical receipts.",
+		Category: flags.StateCategory,
+	}
 	GCModeFlag = &cli.StringFlag{
 		Name:     "gcmode",
 		Usage:    `Blockchain garbage collection mode ("full", "archive")`,
@@ -1779,6 +1784,10 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 		if err = cfg.HistoryMode.UnmarshalText([]byte(value)); err != nil {
 			Fatalf("--%s: %v", ChainHistoryFlag.Name, err)
 		}
+	}
+
+	if ctx.IsSet(SnapSkipReceiptsFlag.Name) {
+		cfg.SnapSkipReceipts = ctx.Bool(SnapSkipReceiptsFlag.Name)
 	}
 
 	if ctx.IsSet(CacheFlag.Name) || ctx.IsSet(CacheDatabaseFlag.Name) {
